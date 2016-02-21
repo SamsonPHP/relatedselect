@@ -1,0 +1,28 @@
+{
+	"name": "samsonphp/relatedselect",
+	"description": "SamsonPHP related select module",
+	"keywords": [
+		"select",
+		"related select"
+	],
+	"author": "Ruslan Molodyko <molodyko@samsonos.com>",
+	"minimum-stability": "dev",
+	"require": {
+		"samsonos/js_core": "*"
+	},
+	"license": "Open Software License (OSL) v 3.0",
+	"homepage": "http://samsonos.com/",
+	"autoload": {
+		"classmap": [
+			"src/"
+		],
+		"psr-4": {
+			"samsonframework\\routing\\": "src/"
+		}
+	},
+	"config": {
+		"github-protocols": [
+			"https"
+		]
+	}
+}
