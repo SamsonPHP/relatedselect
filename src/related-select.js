@@ -17,6 +17,15 @@ var RelatedSelect = function(options) {
     // Group name
     this.group = options.group;
 
+    // If set onload method
+    this.onLoad = options.onLoad;
+
+    // If set onload method
+    this.onAdd = options.onAdd;
+
+    // Init data
+    this.initData = options.initData;
+
     // On render callback
     this.onRender = options.onRender || function(element) {
             // Set selectFx plugin
@@ -246,4 +255,26 @@ var RelatedSelect = function(options) {
         }
         return result;
     };
+
+    /**
+     * Add selectors by data
+     */
+    self.initValues = function() {
+
+        if (typeof this.initData !== 'undefined') {
+            this.initData.forEach(function(value) {
+                var value = typeof value === 'string' ? value : value.value;
+                if (typeof this.onAdd === 'function') {
+                    var selector = this.onAdd.call(this);
+                }
+                if (value) {
+                    this.add(selector, value);
+                }
+            }.bind(this));
+        }
+    };
+
+    if (typeof this.onLoad === 'function') {
+        this.onLoad(this);
+    }
 };
