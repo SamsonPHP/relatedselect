@@ -101,10 +101,16 @@
 					classes = '',
 					link = '';
 
+			// Find selected options
+			if (typeof el === 'object' && typeof el.value === 'string' && el.value === self.selectedOpt.value) {
+				classes += 'cs-selected ';
+			}
+
 			if( el.selectedOpt && !this.foundSelected && !this.hasDefaultPlaceholder ) {
 				classes += 'cs-selected ';
 				this.foundSelected = true;
 			}
+
 			// extra classes
 			if( el.getAttribute( 'data-class' ) ) {
 				classes += el.getAttribute( 'data-class' );
