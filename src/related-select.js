@@ -23,6 +23,9 @@ var RelatedSelect = function(options) {
     // If set onload method
     this.onAdd = options.onAdd;
 
+    // Sort collection
+    this.sortCollectionHandler = options.sortCollectionHandler;
+
     // Init data
     this.initData = options.initData;
 
@@ -83,10 +86,25 @@ var RelatedSelect = function(options) {
      * Redraw all select of such group
      */
     self.reDraw = function() {
-        for (var id in this.elements) {
+        for (var id in this.sortSelects()) {
             var element = this.elements[id];
             this.addSelect(element.parent, element.selected, id);
         }
+    };
+
+    /**
+     * Sort slect after redraw
+     */
+    self.sortSelects = function() {
+        return this.elements.sort(function(a, b) {
+            if (a.created > b.created) {
+                return -1;
+            }
+            if (a.created < b.created) {
+                return 1;
+            }
+            return 0;
+        });
     };
 
     /**
@@ -119,7 +137,8 @@ var RelatedSelect = function(options) {
 
         // If it is new select and such selected value is passed then set another value
         if ((selectedKeys != null) && (id == null)) {
-            if (selectedKeys.indexOf(selected) !== -1) {
+            // If keys exists in array or selected not passed then find first valid value from collection
+            if (selectedKeys.indexOf(selected) !== -1 || selected === undefined) {
                 for (var i in this.collection) {
                     var value = this.getFirstKey(this.collection[i]);
                     if (selectedKeys.indexOf(value) === -1) {
@@ -153,7 +172,8 @@ var RelatedSelect = function(options) {
         this.elements[id] = {
             parent: parent,
             selected: selected,
-            element: element
+            element: element,
+            created: (new Date()).getTime()
         };
     };
 
@@ -177,7 +197,7 @@ var RelatedSelect = function(options) {
             selectedKeys = this.getSelectedOptions();
 
         // Iterate all collection value
-        this.collection.forEach(function(item) {
+        this.sortCollection().forEach(function(item) {
             var value = this.getFirstKey(item),
                 key = item[value];
 
@@ -193,6 +213,21 @@ var RelatedSelect = function(options) {
         }.bind(this));
 
         return this.selectHtml(options, this.group, id, this.selectDefaulClass.replace(/\./g, ' '), this.selectName);
+    };
+
+    /**
+     * Sort collection
+     */
+    self.sortCollection = function() {
+        return this.collection.sort(typeof this.sortCollectionHandler === 'function' || function (a, b) {
+            if (this.getFirstKey(a) > this.getFirstKey(b)) {
+                return 1;
+            }
+            if (this.getFirstKey(a) < this.getFirstKey(b)) {
+                return -1;
+            }
+            return 0;
+        }.bind(this));
     };
 
     /**
