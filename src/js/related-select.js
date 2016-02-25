@@ -31,8 +31,10 @@ var RelatedSelect = function(options) {
 
     // On render callback
     this.onRender = options.onRender || function(element) {
+            var find = element.parent().a('data-find');
             // Set selectFx plugin
             new SelectFx(element.DOMElement, {
+                find: find == 'true',
                 onChange: function(value, old, el) {
                     var id = s(el).a('data-id');
 
