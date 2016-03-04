@@ -247,9 +247,9 @@
 	SelectFx.prototype.updateSelectEvent = function(value) {
 		var li = s('li[data-option]', parent), span = s('li[data-option] span', parent);
 		li.css('display', 'none');
-		var regex = new RegExp(value);
+		var regex = new RegExp(value, 'i');
 		span.each(function(e) {
-			if (regex.test(e.html(), 'i')) {
+			if (regex.test(e.html())) {
 				e.parent().css('display', 'block');
 			}
 		});
